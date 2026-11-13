@@ -14,4 +14,10 @@ Rails.application.routes.draw do
       get :outliers
     end
   end
+
+  match "/api/*path", via: :all, to: ->(_env) { [ 404, { "content-type" => "application/json" }, [ '{"error":"Not found"}' ] ] }
+
+  # Everything else is a page of the React app.
+  get "*path", to: "frontend#index"
+  root "frontend#index"
 end

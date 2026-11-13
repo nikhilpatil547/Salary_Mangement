@@ -1,0 +1,9 @@
+#!/bin/bash -e
+# Before the server starts: create or migrate the database, then seed it. The seed does nothing once
+# employees exist, so restarts and redeploys never replace real data.
+if [ "$1" == "bin/rails" ] && [ "$2" == "server" ]; then
+  bin/rails db:prepare
+  bin/rails db:seed
+fi
+
+exec "$@"

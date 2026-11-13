@@ -1,0 +1,30 @@
+# Runs the whole app locally: docker compose up --build, then open http://localhost:8080
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: salary
+      POSTGRES_PASSWORD: salary
+      POSTGRES_DB: salary_management_production
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U salary"]
+      interval: 2s
+      retries: 30
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://salary:salary@db:5432/salary_management_production
+      SECRET_KEY_BASE: local-only-change-me-0123456789abcdef0123456789abcdef0123456789abcdef
+      # Plain HTTP on localhost, so turn off the HTTPS redirect used in real deployments.
+      DISABLE_SSL: "1"
+    ports:
+      - "${APP_PORT:-8080}:3000"
+
+volumes:
+  db-data:

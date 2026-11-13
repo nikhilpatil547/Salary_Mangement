@@ -1,0 +1,9 @@
+.git
+**/node_modules
+frontend/dist
+backend/log/*
+backend/tmp/*
+backend/frontend
+backend/config/master.key
+**/.env*
+docs
