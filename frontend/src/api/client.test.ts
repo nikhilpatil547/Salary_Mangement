@@ -24,7 +24,7 @@ describe('request', () => {
   it('turns validation errors into an ApiError with field messages', async () => {
     mockFetch(422, { errors: { email: ['Email is invalid'] } })
 
-    const error = await request('/api/x', { method: 'POST', body: {} }).catch((e) => e)
+    const error = (await request('/api/x', { method: 'POST', body: {} }).catch((e) => e)) as ApiError
 
     expect(error).toBeInstanceOf(ApiError)
     expect(error.status).toBe(422)

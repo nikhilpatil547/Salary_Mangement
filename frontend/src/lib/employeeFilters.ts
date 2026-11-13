@@ -72,7 +72,7 @@ export function toggleSort(current: EmployeeFilters, key: SortKey): EmployeeFilt
 
 export function toApiParams(filters: EmployeeFilters): Record<string, string | number | undefined> {
   return {
-    q: filters.q || undefined,
+    q: filters.q.trim() || undefined,
     country_id: filters.countryIds.join(',') || undefined,
     department_id: filters.departmentIds.join(',') || undefined,
     job_title_id: filters.jobTitleIds.join(',') || undefined,

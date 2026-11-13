@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatCompactUsd, formatDate, formatMoney, formatPercent } from './format'
+import { formatCompactUsd, formatDate, formatMoney, formatPercent, percentChange } from './format'
 
 describe('formatMoney', () => {
   it('formats in the given currency without decimals', () => {
@@ -28,5 +28,15 @@ describe('formatPercent', () => {
 describe('formatDate', () => {
   it('does not shift the day because of the time zone', () => {
     expect(formatDate('2025-01-01')).toBe('1 Jan 2025')
+  })
+})
+
+describe('percentChange', () => {
+  it('compares a proposed salary with the current one', () => {
+    expect(percentChange(1000, 1100)).toBeCloseTo(10)
+  })
+
+  it('has nothing to say until both numbers are positive', () => {
+    expect(percentChange(1000, 0)).toBeNull()
   })
 })

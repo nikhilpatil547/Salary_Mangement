@@ -1,122 +1,45 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { AppShell, Group, NavLink, Text, ThemeIcon, Title } from '@mantine/core'
+import { IconAlertTriangle, IconChartBar, IconCoin, IconUsers } from '@tabler/icons-react'
+import { Navigate, NavLink as RouterLink, Route, Routes, useLocation } from 'react-router-dom'
+import { EmployeePage } from './pages/EmployeePage'
+import { EmployeesPage } from './pages/EmployeesPage'
+import { InsightsPage } from './pages/InsightsPage'
+import { OutliersPage } from './pages/OutliersPage'
 
-function App() {
-  const [count, setCount] = useState(0)
+const NAV = [
+  { to: '/employees', label: 'Employees', icon: IconUsers },
+  { to: '/insights', label: 'Pay insights', icon: IconChartBar },
+  { to: '/outliers', label: 'Pay outliers', icon: IconAlertTriangle },
+]
+
+export function App() {
+  const { pathname } = useLocation()
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <AppShell header={{ height: 56 }} navbar={{ width: 220, breakpoint: 'sm' }} padding="lg">
+      <AppShell.Header px="lg">
+        <Group h="100%" gap="sm">
+          <ThemeIcon variant="light" size="lg"><IconCoin size={20} /></ThemeIcon>
+          <Title order={4}>ACME Salary Management</Title>
+          <Text c="dimmed" size="sm" visibleFrom="sm">HR</Text>
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="sm">
+        {NAV.map(({ to, label, icon: Icon }) => (
+          <NavLink key={to} component={RouterLink} to={to} label={label}
+            leftSection={<Icon size={18} />} active={pathname.startsWith(to)} />
+        ))}
+      </AppShell.Navbar>
+      <AppShell.Main>
+        <Routes>
+          <Route path="/" element={<Navigate to="/employees" replace />} />
+          <Route path="/employees" element={<EmployeesPage />} />
+          <Route path="/employees/:id" element={<EmployeePage />} />
+          <Route path="/insights" element={<InsightsPage />} />
+          <Route path="/outliers" element={<OutliersPage />} />
+          <Route path="*" element={<Navigate to="/employees" replace />} />
+        </Routes>
+      </AppShell.Main>
+    </AppShell>
   )
 }
-
-export default App

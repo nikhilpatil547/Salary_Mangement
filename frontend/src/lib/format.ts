@@ -51,3 +51,8 @@ export function todayIso(): string {
   const pad = (n: number) => String(n).padStart(2, '0')
   return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
 }
+
+export function percentChange(current: number, proposed: number): number | null {
+  if (!(current > 0) || !(proposed > 0)) return null
+  return ((proposed - current) / current) * 100
+}
