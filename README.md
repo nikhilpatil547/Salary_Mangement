@@ -59,7 +59,7 @@ Re-seed at any time with `RESEED=1 bin/rails db:seed`. Change the size with `EMP
 
 ```bash
 cd backend && bundle exec rspec && bin/rubocop     # 58 examples, about 2s
-cd frontend && npm test && npm run lint            # 30 tests, about 7s
+cd frontend && npm test && npm run lint            # 31 tests, about 7s
 ```
 
 GitHub Actions runs both suites, the linters and the production build on every push.

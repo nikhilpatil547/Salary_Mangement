@@ -137,7 +137,7 @@ for the insights, refreshed on write; a background job for exports.
 | RSpec queries | 11 | `PayInsights`, with numbers worked out by hand (medians, USD conversion, full-time scope, outliers) |
 | RSpec seeding | 3 | Same seed gives the same data; every history starts at hire and ends at the current salary |
 | RSpec requests | 27 | Every endpoint: filters, sort safety, CSV, validation errors, 404/409, client-side routes |
-| Vitest | 30 | API client errors, URL filter state, formatting, the directory page, the salary change form |
+| Vitest | 31 | API client errors, URL filter state (including rapid changes), formatting, the directory page, the salary change form |
 
 All tests are deterministic: fixed factories, a fixed seed, no network (`fetch` is mocked in the UI).
 The backend suite runs in about 2 seconds and the frontend suite in about 7 seconds. CI runs both, plus

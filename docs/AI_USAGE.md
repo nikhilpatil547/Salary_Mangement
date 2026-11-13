@@ -38,6 +38,9 @@ AI-generated code was treated as a draft that has to pass tests and inspection. 
   only hashed assets are cached long-term.
 - **Silent currency bugs.** An early design allowed editing an employee's country. That would turn the
   same number into a different currency, so country is now fixed after hiring.
+- **Filters lost on quick clicks.** Recording the demo showed that picking a country and then a job title
+  in quick succession dropped the country. React Router's functional `setSearchParams` reads stale params.
+  Fixed, and covered by a test that fails on the old code.
 - **Lint findings** (state set inside an effect, mixed component/utility exports) were fixed, not
   silenced.
 
