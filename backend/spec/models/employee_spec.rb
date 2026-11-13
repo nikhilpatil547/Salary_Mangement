@@ -53,6 +53,18 @@ RSpec.describe Employee do
     end
   end
 
+  describe "employee code" do
+    it "is assigned automatically when left blank" do
+      create(:employee, employee_code: "ACME-00041")
+
+      expect(create(:employee, employee_code: "").employee_code).to eq("ACME-00042")
+    end
+
+    it "keeps a code that was given" do
+      expect(create(:employee, employee_code: "CONTRACT-7").employee_code).to eq("CONTRACT-7")
+    end
+  end
+
   describe "#revise_salary!" do
     let(:employee) { create(:employee, salary: 1_000_000) }
 

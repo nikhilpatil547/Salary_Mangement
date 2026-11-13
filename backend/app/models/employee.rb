@@ -25,7 +25,10 @@ class Employee < ApplicationRecord
   # Moving country changes the pay currency, which needs its own relocation flow (out of scope).
   validate :country_unchanged, on: :update
 
+  before_validation :assign_employee_code, on: :create
   after_create :record_hire_revision
+
+  CODE_PREFIX = "ACME-".freeze
 
   def full_name
     "#{first_name} #{last_name}"
@@ -68,6 +71,15 @@ class Employee < ApplicationRecord
     return unless will_save_change_to_country_id?
 
     errors.add(:country, "can't be changed after hiring")
+  end
+
+  # HR should not have to invent codes. The unique index still guards against two saves racing.
+  def assign_employee_code
+    return if employee_code.present?
+
+    last_number = Employee.where("employee_code LIKE ?", "#{CODE_PREFIX}%")
+                          .pick(Arel.sql("MAX(CAST(SUBSTRING(employee_code FROM '[0-9]+$') AS INTEGER))"))
+    self.employee_code = format("#{CODE_PREFIX}%05d", last_number.to_i + 1)
   end
 
   def record_hire_revision
