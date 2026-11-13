@@ -1,24 +1,8 @@
-# README
+# Backend (Rails API)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+See the [main README](../README.md) for setup and [ARCHITECTURE.md](../docs/ARCHITECTURE.md) for design.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- `app/models` – data rules; salary changes only through `Employee#revise_salary!`
+- `app/queries` – `EmployeeSearch`, `Pagination`, `PayInsights` (all statistics in SQL)
+- `app/serializers` – JSON shape for the UI
+- `lib/seeding` – deterministic 10,000-employee generator (`bin/rails db:seed`)
