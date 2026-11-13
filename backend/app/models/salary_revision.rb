@@ -10,8 +10,21 @@ class SalaryRevision < ApplicationRecord
   validates :reason, inclusion: { in: REASONS }
   validates :effective_on, presence: true
   validates :note, length: { maximum: 500 }
+  validate :hire_is_only_the_first_revision
 
   scope :chronological, -> { order(:effective_on, :id) }
+
+  private
+
+  def hire_is_only_the_first_revision
+    if reason == "hire" && previous_salary.present?
+      errors.add(:reason, "hire can only be used for the starting salary")
+    elsif reason != "hire" && previous_salary.blank?
+      errors.add(:previous_salary, "is required for a salary change")
+    end
+  end
+
+  public
 
   def readonly?
     persisted?
