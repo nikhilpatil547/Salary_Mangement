@@ -6,5 +6,12 @@ Rails.application.routes.draw do
     resources :employees do
       resources :salary_revisions, only: %i[index create]
     end
+    scope :insights, controller: :insights, as: :insights do
+      get :summary
+      get :countries
+      get :job_titles
+      get :departments
+      get :outliers
+    end
   end
 end
