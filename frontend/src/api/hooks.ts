@@ -67,18 +67,16 @@ export function useUpdateEmployee(id: number) {
   })
 }
 
+// The deleted employee's own queries are left alone: their page is still on screen while this runs, and
+// touching them would refetch a record that no longer exists. They expire from the cache on their own.
 export function useDeleteEmployee(id: number) {
   const client = useQueryClient()
   return useMutation({
     mutationFn: () => request<void>(`/api/employees/${id}`, { method: 'DELETE' }),
-    onSuccess: () => {
-      // Drop this employee's cached data first so nothing tries to refetch a deleted record.
-      client.removeQueries({ queryKey: queryKeys.employee(id) })
-      return Promise.all([
-        client.invalidateQueries({ queryKey: [...queryKeys.employees, 'list'] }),
-        client.invalidateQueries({ queryKey: queryKeys.insights }),
-      ])
-    },
+    onSuccess: () => Promise.all([
+      client.invalidateQueries({ queryKey: [...queryKeys.employees, 'list'], refetchType: 'none' }),
+      client.invalidateQueries({ queryKey: queryKeys.insights, refetchType: 'none' }),
+    ]),
   })
 }
 

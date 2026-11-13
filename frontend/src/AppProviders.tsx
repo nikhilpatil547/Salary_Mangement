@@ -11,10 +11,11 @@ const theme = createTheme({
   fontFamily: 'Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif',
 })
 
-export function AppProviders({ children, queryClient }: { children: ReactNode; queryClient?: QueryClient }) {
+// env="test" turns off Mantine's transitions and portals, which jsdom cannot run.
+export function AppProviders({ children, queryClient, env }: { children: ReactNode; queryClient?: QueryClient; env?: 'test' }) {
   const [client] = useState(() => queryClient ?? makeQueryClient())
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} env={env}>
       <Notifications position="top-right" />
       <QueryClientProvider client={client}>
         <ModalsProvider>{children}</ModalsProvider>
